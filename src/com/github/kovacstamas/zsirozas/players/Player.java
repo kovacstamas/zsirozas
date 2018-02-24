@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.kovacstamas.zsirozas.decks.cards.Card;
+import com.github.kovacstamas.zsirozas.decks.cards.CardRank;
 
 public class Player {
 	protected List<Card> hand;
@@ -20,10 +21,6 @@ public class Player {
 	
 	public void addCardToHand(Card card) {
 		hand.add(card);
-	}
-	
-	public String toString() {
-		return name + ": " + points + "point";
 	}
 	
 	public void gainPoints(int gainedPoints) {
@@ -46,20 +43,59 @@ public class Player {
 			i++;
 		}
 		System.out.println("Which card to play?");
-		int selectedCardNumber = chooseCard();
+		int selectedCardNumber = askInteger();
 		return hand.remove(selectedCardNumber);
 	}
 	
-	private int chooseCard() {
+	public boolean wantsToContinue() {
+		System.out.println(name + ", do you wish to continue the trick?");
+		return askBoolean();
+		
+	}
+	
+	public boolean haveCardInRank(CardRank rank) {
+		for (Card card : hand) {
+			if (card.getRank().equals(rank) || card.getRank().equals(CardRank.SEVEN)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean haveCardLeft() {
+		return hand.size() > 0;
+	}
+	
+	public int getHandSize() {
+		return hand.size();
+	}
+	
+	private int askInteger() {
 		int choosen = 0;
 		try{
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter Integer:");	    
+			System.out.print("Enter Integer: ");	    
 	        choosen = Integer.parseInt(br.readLine());
 	    }catch(Exception nfe){
 	        System.err.println("Exception");
 	    }
 		return choosen;
+	}
+	
+	private boolean askBoolean() {
+		boolean answer = false;
+		try{
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.print("Enter true/false: ");	    
+	        answer = Boolean.parseBoolean(br.readLine());
+	    }catch(Exception nfe){
+	        System.err.println("Exception");
+	    }
+		return answer;
+	}
+	
+	public String toString() {
+		return name;
 	}
 
 }

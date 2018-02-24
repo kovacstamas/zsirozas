@@ -1,6 +1,6 @@
 package com.github.kovacstamas.zsirozas;
 
-import com.github.kovacstamas.zsirozas.games.TwoPlayerZsirozas;
+import com.github.kovacstamas.zsirozas.games.twoplayerzsirozas.TwoPlayerZsirozas;
 
 public class Zsirozas {
 	public static void main(String[] args) {
