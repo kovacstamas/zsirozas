@@ -47,6 +47,50 @@ public class Player {
 		return hand.remove(selectedCardNumber);
 	}
 	
+	public Card playsCardInRank(CardRank rank) {
+		System.out.println(name + " hand:");
+		int i = 0;
+		for(Card card : hand) {
+			String str = i + ". ";
+			if (card.getRank().equals(rank)) {
+				str += "[" + card  + "], ";
+			} else {
+				str += card + ", ";
+			}
+			System.out.print(str);
+			i++;
+		}
+		System.out.println("Play a card with the rank " + rank);
+		int selectedCardNumber = askInteger();
+		while(!hand.get(selectedCardNumber).getRank().equals(rank)) {
+			System.out.println("You are not allowed to play that card. You have to play one with the rank " + rank);
+			selectedCardNumber = askInteger();
+		}
+		return hand.remove(selectedCardNumber);
+	}
+	
+	public Card playsCardInRankOrSeven(CardRank rank) {
+		System.out.println(name + " hand:");
+		int i = 0;
+		for(Card card : hand) {
+			String str = i + ". ";
+			if (card.getRank().equals(rank) || card.getRank().equals(CardRank.SEVEN)) {
+				str += "[" + card  + "], ";
+			} else {
+				str += card + ", ";
+			}
+			System.out.print(str);
+			i++;
+		}
+		System.out.println("Play a card with the rank " + rank);
+		int selectedCardNumber = askInteger();
+		while(!hand.get(selectedCardNumber).getRank().equals(rank) && !hand.get(selectedCardNumber).getRank().equals(CardRank.SEVEN)) {
+			System.out.println("You are not allowed to play that card. You have to play one with the rank " + rank);
+			selectedCardNumber = askInteger();
+		}
+		return hand.remove(selectedCardNumber);
+	}
+	
 	public boolean wantsToContinue() {
 		System.out.println(name + ", do you wish to continue the trick?");
 		return askBoolean();
