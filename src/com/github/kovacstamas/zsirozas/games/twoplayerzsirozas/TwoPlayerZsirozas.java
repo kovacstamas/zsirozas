@@ -71,7 +71,7 @@ public class TwoPlayerZsirozas extends Game {
 				&& leader.haveCardLeft()
 				&& leader.haveCardInRank(trickPile.getRank())
 				&& leader.wantsToContinue()) {
-			leaderCard = leader.playsCard();
+			leaderCard = leader.playsCardInRankOrSeven(trickPile.getRank());
 			trickPile.addCard(leaderCard);
 			System.out.println("The led card is: " + leaderCard);
 			
