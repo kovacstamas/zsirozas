@@ -26,17 +26,37 @@ public class TwoPlayerZsirozas extends Game {
 		int i = 0;
 		while (!deck.empty()) {
 			i++;
-			System.out.println("");
+			System.out.println();
+			System.out.println("Trick no. " + i + " starts. Decksize: " + deck.getSize());
+			trick();
+			System.out.println("Trick no. " + i + " is over. The current standing is:");
+			System.out.println(player1 + ": " + player1.getPoints());
+			System.out.println(player2 + ": " + player2.getPoints());
+			System.out.println();
+			refillPlayerHands();
+			System.out.println();
+			System.out.println("----------------------------");
+		}
+		System.out.println();
+		System.out.println("Deck is empty. Endgame started.");
+		System.out.println();
+		while (player1.getHandSize() > 0) {
+			i++;
+			System.out.println();
 			System.out.println("Trick no. " + i + " starts.");
 			trick();
 			System.out.println("Trick no. " + i + " is over. The current standing is:");
 			System.out.println(player1 + ": " + player1.getPoints());
 			System.out.println(player2 + ": " + player2.getPoints());
-			System.out.println("");
-			refillPlayerHands();
-			System.out.println("");
+			System.out.println();
 			System.out.println("----------------------------");
 		}
+		playerRoles.get(PlayerRole.TRICKLEADER).gainPoints(10);
+		System.out.println();
+		System.out.println("The game is over. Results:");
+		System.out.println(player1 + ": " + player1.getPoints());
+		System.out.println(player2 + ": " + player2.getPoints());
+		System.out.println("The winner is: "  + (player1.getPoints() > player2.getPoints() ? player1 : player2));
 	}
 	
 	private void initGame() {
@@ -115,5 +135,4 @@ public class TwoPlayerZsirozas extends Game {
 			return false;
 		}
 	}
-
 }
