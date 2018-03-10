@@ -3,6 +3,9 @@ package com.github.kovacstamas.zsirozas.games.twoplayerzsirozas;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.kovacstamas.zsirozas.dao.PlayerDao;
+import com.github.kovacstamas.zsirozas.dao.PlayerDaoEnum;
+import com.github.kovacstamas.zsirozas.dao.PlayerDaoFactory;
 import com.github.kovacstamas.zsirozas.decks.HungarianDeck;
 import com.github.kovacstamas.zsirozas.decks.cards.Card;
 import com.github.kovacstamas.zsirozas.decks.cards.CardRank;
@@ -19,8 +22,8 @@ public class TwoPlayerZsirozas extends Game {
 	private static int CARDS_IN_HAND = 4;
 	
 	@Override
-	public void start() {
-		initGame();
+	public void start(String player1DaoName, String player2DaoName) {
+		initGame(player1DaoName, player2DaoName);
 		System.out.println("The game has begun!");
 		System.out.println("----------------------------");
 		int i = 0;
@@ -59,12 +62,13 @@ public class TwoPlayerZsirozas extends Game {
 		System.out.println("The winner is: "  + (player1.getPoints() > player2.getPoints() ? player1 : player2));
 	}
 	
-	private void initGame() {
+	private void initGame(String player1DaoName, String player2DaoName) {
 		deck = new HungarianDeck();
 		deck.shuffle();
-		
-		player1 = new Player("Player 1");
-		player2 = new Player("Player 2");
+		PlayerDao player1Dao = PlayerDaoFactory.getDao(PlayerDaoEnum.valueOf(player1DaoName));
+		PlayerDao player2Dao = PlayerDaoFactory.getDao(PlayerDaoEnum.valueOf(player2DaoName));
+		player1 = new Player("Player 1", player1Dao);
+		player2 = new Player("Player 2", player2Dao);
 		
 		refillPlayerHands();
 		
@@ -90,7 +94,7 @@ public class TwoPlayerZsirozas extends Game {
 		while (equalInRank(trickPile.getRank(), followCard) 
 				&& leader.haveCardLeft()
 				&& leader.haveCardInRank(trickPile.getRank())
-				&& leader.wantsToContinue()) {
+				&& leader.makesYesNoDecision("Do you wish to continue the trick?")) {
 			leaderCard = leader.playsCardInRankOrSeven(trickPile.getRank());
 			trickPile.addCard(leaderCard);
 			System.out.println("The led card is: " + leaderCard);
