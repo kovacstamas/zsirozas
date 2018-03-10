@@ -7,11 +7,12 @@ import java.util.List;
 import com.github.kovacstamas.zsirozas.decks.cards.Card;
 
 public class ConsolePlayerDao implements PlayerDao {
-	private String name;
+	private static final char LOWERCASE_YES = 'y';
+	private static final char LOWERCASE_NO = 'n';
 	
 	@Override
 	public Card pickCard(List<Card> hand) {
-		System.out.println(" hand:");
+		System.out.println("Hand:");
 		int i = 0;
 		for(Card card : hand) {
 			System.out.print(i+ ". " + card + ", ");
@@ -24,7 +25,7 @@ public class ConsolePlayerDao implements PlayerDao {
 
 	@Override
 	public Card pickCardHighlighted(List<Card> hand, List<Card> highlighted) {
-		System.out.println(" hand:");
+		System.out.println("Hand:");
 		int i = 0;
 		for(Card card : hand) {
 			String str = i + ". ";
@@ -52,27 +53,46 @@ public class ConsolePlayerDao implements PlayerDao {
 	
 	private int askInteger() {
 		int choosen = 0;
-		try{
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter Integer: ");	    
-	        choosen = Integer.parseInt(br.readLine());
-	    }catch(Exception nfe){
-	        System.err.println("Exception");
-	    }
+		choosen = Integer.parseInt(askString());
 		return choosen;
 	}
 	
-	
 	private boolean askBoolean() {
 		boolean answer = false;
-		try{
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter true/false: ");	    
-	        answer = Boolean.parseBoolean(br.readLine());
-	    }catch(Exception nfe){
-	        System.err.println("Exception");
+		try {
+			while(true) {
+				String answerString = askString("(Y)es/(N)o").toLowerCase();
+				char firstChar = answerString.charAt(0); 
+				if (LOWERCASE_YES == firstChar) {
+					return true;
+				} else if (LOWERCASE_NO == firstChar) {
+					return false;
+				}
+				System.out.println("Answer with yes or no.");
+			}
+	    } catch (Exception nfe){
+	        System.err.println("Exception: " + nfe);
 	    }
 		return answer;
+	}
+	
+	private String askString(String option) {
+		String answer = "";
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			do {
+				System.out.print(option + " > ");
+				answer = br.readLine();
+			} while(answer.isEmpty());
+			
+		} catch (Exception nfe){
+	        System.err.println("Exception: " + nfe);
+	    } 
+		return answer;
+	}
+	
+	private String askString () {
+		return askString("");
 	}
 
 }
